@@ -4,17 +4,14 @@ from ..interactors.search import SearchInteractor
 
 router = APIRouter()
 
-class SearchRequest(BaseModel):
-    question: str
-
 class SearchResponse(BaseModel):
     answer: str
 
-@router.post("/search", response_model=SearchResponse)
-async def search(request: SearchRequest):
+@router.get("/search", response_model=SearchResponse)
+async def search(question: str):
     try:
         interactor = SearchInteractor()
-        answer = await interactor.execute(request.question)
+        answer = await interactor.execute(question)
         return SearchResponse(answer=answer)
         
     except Exception as e:
